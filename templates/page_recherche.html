@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<title>Inscriptions à Poudlard</title>
+
+<header>
+  <h1 style="text-align:center"> Voyages </h1>
+</header>
+
+<p>
+    {% for element in liste_voyage %}
+    {% for indice in element %}
+        <li> {{indice}} </li>
+    {% endfor %}
+</p>""
+
+
+</html>
