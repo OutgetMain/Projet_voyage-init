@@ -49,55 +49,91 @@ def accueil():
             
     return render_template("Accueil.html", show_form=False)
 
-@app.route("/page_recherche")
+@app.route("/page_recherche", methods=["GET"])
 def voyage():
-    liste_voyage = []  # Liste pour regrouper les voyages par id_voyage
-    
+    search_query = request.args.get("search", "").strip()  # Récupère le paramètre 'search'
+    liste_voyage = []
+
     with extract.conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor) as cur_lvoyage:
-        cur_lvoyage.execute("""
-            SELECT id_voyage, id_ville, date_debut, date_de_fin 
-            FROM Etape NATURAL JOIN voyage 
-            WHERE reservation = true
-        """)
+        # Si une recherche est effectuée, applique un filtre
+        if search_query:
+            cur_lvoyage.execute("""
+                SELECT id_voyage, id_ville, date_depart, date_arrivée, date_debut, date_de_fin
+                FROM Etape NATURAL JOIN voyage
+                WHERE reservation = true AND (
+                    CAST(id_voyage AS TEXT) ILIKE %s OR
+                    id_ville IN (
+                        SELECT id_ville FROM Ville WHERE nom ILIKE %s
+                    )
+                )
+            """, (f"%{search_query}%", f"%{search_query}%"))
+        else:
+            cur_lvoyage.execute("""
+                SELECT id_voyage, id_ville, date_depart, date_arrivée, date_debut, date_de_fin
+                FROM Etape NATURAL JOIN voyage
+                WHERE reservation = true
+            """)
         
         for result in cur_lvoyage:
-            # Chercher si un groupe avec cet id_voyage existe déjà
             voyage_existe = False
             for groupe in liste_voyage:
-                if groupe[0] == result.id_voyage:  # Vérifie si le voyage est déjà dans la liste
-                    groupe.append([result.id_ville, result.id_voyage, (result.date_debut.year, result.date_debut.month, result.date_debut.day)])
+                if groupe[0] == result.id_voyage:
+                    groupe.append([
+                        FctUsuelle.convert(str(result.id_ville), "SELECT nom FROM Ville WHERE id_ville = %s ", "nom"),
+                        result.id_voyage,
+                        (result.date_depart.year, result.date_depart.month, result.date_depart.day),
+                        (result.date_arrivée.year, result.date_arrivée.month, result.date_arrivée.day)
+                    ])
                     voyage_existe = True
                     break
-            
-            # Si aucun groupe pour cet id_voyage, créer un nouveau groupe
+
             if not voyage_existe:
                 liste_voyage.append([
-                    result.id_voyage,  # ID du voyage
-                    [result.id_ville, result.id_voyage, (result.date_debut.year, result.date_debut.month, result.date_debut.day)]
+                    result.id_voyage,
+                    (result.date_debut.year, result.date_debut.month, result.date_debut.day),
+                    (result.date_de_fin.year, result.date_de_fin.month, result.date_de_fin.day),
+                    [
+                        FctUsuelle.convert(str(result.id_ville), "SELECT nom FROM Ville WHERE id_ville = %s ", "nom"),
+                        result.id_voyage,
+                        (result.date_depart.year, result.date_depart.month, result.date_depart.day),
+                        (result.date_arrivée.year, result.date_arrivée.month, result.date_arrivée.day)
+                    ]
                 ])
-    
-    return liste_voyage
-    return render_template("page_recherche.html",liste_voyage = liste_voyage)
-""""
-def liste_voyage():
-    liste_voyage = []
-    with extract.conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor) as cur_lvoyage:
-        cur_lvoyage.execute("SELECT id_voyage,id_ville,date_debut,date_de_fin FROM Etape NATURAL JOIN voyage WHERE reservation = true ")
-        for result in cur_lvoyage:
-            for indice in range(len(liste_voyage)):
-                if result.id_voyage in liste_voyage[indice]:
-                    liste_voyage[indice].append([result.id_voyage,FctUsuelle.convert_ville(str(result.id_ville)), 
-                                 (result.date_debut.year,result.date_debut.month,result.date_debut.day), 
-                                 (result.date_de_fin.year,result.date_de_fin.month,result.date_de_fin.day)
-                                 ]) 
-                else:
-                    liste_voyage.append([result.id_voyage,FctUsuelle.convert_ville(str(result.id_ville)), 
-                                        (result.date_debut.year,result.date_debut.month,result.date_debut.day), 
-                                        (result.date_de_fin.year,result.date_de_fin.month,result.date_de_fin.day)
-                                        ]) 
 
-    return render_template("page_recherche.html",liste_voyage = liste_voyage)"""
+    return render_template("page_recherche.html", liste_voyage=liste_voyage)
 
+
+@app.route('/detail/<int:item_id>', methods=["GET", "POST"])
+def detail(item_id):
+    with extract.conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor) as cur_detail:
+        cur_detail.execute("""
+            SELECT id_voyage, id_ville, date_depart, date_arrivée,date_debut,date_de_fin,id_logement,id_transport,id_et_type
+            FROM Etape NATURAL JOIN voyage 
+            WHERE id_voyage = %s
+        """,(item_id,))
+        details = cur_detail.fetchall()
+
+        results = []
+        for detail in details:
+            nom_ville = FctUsuelle.convert(str(detail.id_ville),"SELECT nom FROM Ville WHERE id_ville = %s ","nom")
+            logement = FctUsuelle.convert(str(detail.id_logement),"SELECT id_type_logement FROM logement WHERE id_logement = %s ","id_type_logement")
+            type_logement = FctUsuelle.convert(logement,"SELECT valeur FROM type_logement WHERE id_type_logement = %s ","valeur")
+            transport = FctUsuelle.convert(str(detail.id_transport),"SELECT valeur FROM moyen_transport WHERE id_transport = %s ","valeur")
+            type = FctUsuelle.convert(str(detail.id_et_type),"SELECT valeur FROM type_etape WHERE id_et_type = %s ","valeur")
+            # Ajouter le nom de la ville à chaque ligne de résultat
+            results.append({
+                "id_voyage": detail.id_voyage,
+                "id_ville": detail.id_ville,
+                "nom_ville": nom_ville,
+                "date_depart": detail.date_depart,
+                "date_arrivée": detail.date_arrivée,
+                "date_debut": detail.date_debut,
+                "date_de_fin": detail.date_de_fin,
+                "type_logement": type_logement,
+                "type": type,
+                "transport": transport
+            })
+    return render_template("detail.html", details=results)
 
 
 if __name__ == '__main__':

@@ -4,14 +4,37 @@
 
 <header>
   <h1 style="text-align:center"> Voyages </h1>
+  <style>.item { border: 1px; padding: 10px; margin: 5px; text-decoration: none; }</style>
 </header>
+<nav style="text-align:center; background-color:LightGray">
+  <a href="/Accueil">Accueil</a>
+  <a href="/page_recherche">Page_recherche</a>
+</nav>
 
+<!-- Barre de recherche -->
+<div style="text-align: center; margin-bottom: 20px;">
+  <form method="GET" action="/page_recherche">
+    <input type="text" name="search" placeholder="Rechercher par ville ou ID voyage" style="padding: 5px; width: 300px;">
+    <button type="submit" style="padding: 5px;">Rechercher</button>
+  </form>
+</div>
+
+<!-- Liste des voyages -->
 <p>
-    {% for element in liste_voyage %}
-    {% for indice in element %}
-        <li> {{indice}} </li>
-    {% endfor %}
-</p>""
-
+  {% for element in liste_voyage %}
+  <a href="/detail/{{ element[0] }}" class="item">
+    <div id="item-{{loop.index}}" class="item">
+      <p>Le voyage numéro : {{element[0]}}</p>
+      <p>Départ le : {{element[1]}}</p>
+      <p>Retour le : {{element[2]}}</p>
+      {% for indice in range(3,element|length) %}
+      <li>
+        <p>{{element[indice]}}</p>
+      </li>
+      {% endfor %}
+    </div>
+  </a>
+  {% endfor %}
+</p>
 
 </html>

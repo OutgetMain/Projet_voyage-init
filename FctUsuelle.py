@@ -3,11 +3,17 @@ import extract
 import psycopg2
 from psycopg2.extras import NamedTupleCursor
 
-def convert_ville(id_city):
-    liste_ville = []
-    cur_ville = extract.conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
-    cur_ville.execute("SELECT nom FROM Ville WHERE id_ville = %s ",id_city)
-    for result in cur_ville:
-        liste_ville.append(result.nom)
-    cur_ville.close()
-    return liste_ville[0]
+
+def convert(id, query, param_name):
+    """ 
+    Convertit une requête SQL en récupérant la valeur désirée.
+    
+    :param id: Identifiant ou paramètre de la requête SQL
+    :param query: Requête SQL paramétrée (avec %s pour les placeholders)
+    :param param_name: Nom de la colonne contenant la valeur à extraire
+    :return: La première valeur trouvée ou None si aucun résultat
+    """
+    with extract.conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor) as cur:
+        cur.execute(query, (id,))  # Utilisation sécurisée des paramètres
+        result = cur.fetchone()  # Récupérer seulement la première ligne
+        return getattr(result, param_name, None) if result else None

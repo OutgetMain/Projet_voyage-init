@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <title>Détails du Voyage</title>
+    <style>
+        .details {
+            border: 1px solid black;
+            padding: 20px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 style="text-align: center;">Détails du Voyage</h1>
+    </header>
+
+    <div class="details">
+        {% if details %}
+            {% for detail in details %}
+                <p>Voyage numéro : {{ detail.id_voyage }}</p>
+                <p>Ville : {{ detail.nom_ville }}</p>
+                <p>Date de départ : {{ detail.date_depart }}</p>
+                <p>Date d'arrivée : {{ detail.date_arrivée }}</p>
+                <p>Date de début : {{ detail.date_debut }}</p>
+                <p>Date de fin : {{ detail.date_de_fin }}</p>
+                <p>Logement : {{ detail.type_logement}}</p>
+                <p>Transport : {{ detail.transport}}</p>
+                <p>Type: {{ detail.type }}</p>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <p>Aucun détail trouvé pour ce voyage.</p>
+        {% endif %}
+    </div>
+
+    <div style="text-align: center;">
+        <a href="/page_recherche">Retour à la liste des voyages</a>
+    </div>
+</body>
+</html>
+
+
+            
