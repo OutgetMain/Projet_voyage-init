@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS Ville CASCADE;
 DROP TABLE IF EXISTS logement CASCADE;
 DROP TABLE IF EXISTS Etape CASCADE;
 DROP TABLE IF EXISTS Participe CASCADE;
-
+DROP TABLE IF EXISTS historique_indicateurs CASCADE;
 
 CREATE TABLE client(
    id_utilisateur serial,
@@ -21,6 +21,9 @@ CREATE TABLE client(
    prenom VARCHAR(50) NOT NULL,
    tel VARCHAR(50) NOT NULL,
    adresse VARCHAR(50) NOT NULL,
+   age DATE NOT NULL,
+   nationnalite VARCHAR(50) NOT NULL,
+   mdp TEXT NOT NULL,
    PRIMARY KEY(id_utilisateur)
 
 );
@@ -54,6 +57,9 @@ CREATE TABLE type_logement(
 CREATE TABLE Agence(
    id_agence serial,
    nom VARCHAR(50),
+   ville VARCHAR(50),
+   telephone int,
+   adresse VARCHAR(50),
    PRIMARY KEY(id_agence)
 );
 
@@ -78,16 +84,21 @@ CREATE TABLE Travailleur(
    FOREIGN KEY(id_agence) REFERENCES Agence(id_agence) ON DELETE SET NULL
    );
 
+CREATE UNIQUE INDEX uniq_resp_agence ON Travailleur (id_agence) WHERE est_Responsable = TRUE;
+
 
 CREATE TABLE voyage(
    id_voyage serial,
    reservation BOOLEAN NOT NULL,
+   date_reservation_ouverture DATE,
+   date_reservation_fermeture DATE,
    date_debut DATE NOT NULL,
    date_de_fin DATE NOT NULL,
    cout_par_personne DECIMAL(6,2) NOT NULL,
    id_agence int NOT NULL,
    PRIMARY KEY(id_voyage),
-   FOREIGN KEY(id_agence) REFERENCES Agence(id_agence) ON DELETE SET NULL
+   FOREIGN KEY(id_agence) REFERENCES Agence(id_agence) ON DELETE SET NULL,
+   CONSTRAINT verif_date CHECK ((date_debut < date_de_fin) AND (date_reservation_fermeture<date_debut))
 );
 
 
@@ -128,8 +139,8 @@ CREATE TABLE logement(
 CREATE TABLE Etape(
    id_etape serial primary key,
    visa BOOLEAN NOT NULL,
-   date_arrivée VARCHAR(50) NOT NULL,
-   date_depart VARCHAR(50) NOT NULL,
+   date_arrivée DATE NOT NULL,
+   date_depart DATE NOT NULL,
    id_ville int NOT NULL,
    id_et_type int NOT NULL,
    id_logement int NOT NULL,
@@ -139,21 +150,32 @@ CREATE TABLE Etape(
    FOREIGN KEY(id_et_type) REFERENCES type_etape(id_et_type) ON DELETE CASCADE,
    FOREIGN KEY(id_logement) REFERENCES logement(id_logement) ON DELETE SET NULL,
    FOREIGN KEY(id_transport) REFERENCES moyen_transport(id_transport) ON DELETE SET NULL,
-   FOREIGN KEY(id_voyage) REFERENCES voyage(id_voyage) ON DELETE CASCADE
+   FOREIGN KEY(id_voyage) REFERENCES voyage(id_voyage) ON DELETE CASCADE,
+   CONSTRAINT verif_date CHECK (date_arrivée > date_depart)
 );
 
 CREATE TABLE participe(
    id_utilisateur int,
    id_voyage int,
    PRIMARY KEY(id_utilisateur, id_voyage),
-   FOREIGN KEY(id_utilisateur) REFERENCES client(id_utilisateur) ON DELETE SET NULL,
-   FOREIGN KEY(id_voyage) REFERENCES voyage(id_voyage) ON DELETE SET NULL
+   FOREIGN KEY(id_utilisateur) REFERENCES client(id_utilisateur) ON DELETE CASCADE,
+   FOREIGN KEY(id_voyage) REFERENCES voyage(id_voyage) ON DELETE CASCADE
 );
 
-INSERT INTO client(nom, prenom, sexe, courriel, tel, adresse)VALUES
-('Bertrand', 'Pierre', 'H', 'bertrand.pierre@gmail.com', '0634828293', '12 rue du cloché'),
-('Cléa', 'Pierre', 'H', 'clea.pierre@gmail.com', '0732549382', '1 avenue Beaubourg'),
-('Lore', 'Stamina', 'F', 'lore.stamina@gmail.com', '0692839562', '3 boulevard saint honoré');
+CREATE TABLE historique_indicateurs (
+    id_agence INT,
+    semaine DATE,
+    nb_voyages_en_cours INT,
+    nb_voyages_ouverts INT,
+    nb_clients_en_voyage INT,
+    nb_reservations_en_cours INT,
+    PRIMARY KEY (id_agence, semaine)
+);
+
+INSERT INTO client(nom, prenom, sexe, courriel, tel, adresse, mdp, age, nationnalite)VALUES
+('Bertrand', 'Pierre', 'H', 'bertrand.pierre@gmail.com', '0634828293', '12 rue du cloché','1234', '2000/10/19', 'FRANCE'),
+('Cléa', 'Pierre', 'H', 'clea.pierre@gmail.com', '0732549382', '1 avenue Beaubourg','1234', '1995-08-09', 'ESPAGNE'),
+('Lore', 'Stamina', 'F', 'lore.stamina@gmail.com', '0692839562', '3 boulevard saint honoré','1234', '2003-10-5', 'PORTUGAL');
 
 
 INSERT INTO type_etape(valeur)VALUES
@@ -172,10 +194,10 @@ INSERT INTO type_logement(valeur) VALUES
 ('Hôtel'),
 ('Aubgerge');
 
-INSERT INTO Agence(nom) VALUES
-('Cleo'),
-('Fram'),
-('Covoyage');
+INSERT INTO Agence(nom,ville,telephone,adresse) VALUES
+('Cleo','Metz',0651281474,'10 rue des petits rond'),
+('Fram','Nancy',0651284125,'43 rue des roulletes'),
+('Covoyage','Paris',0651748274,'51 avenue montagien');
 
 INSERT INTO langue(langue) VALUES
 ('Anglais'),
@@ -198,7 +220,7 @@ INSERT INTO Travailleur(login, mdp, id_agence, est_Responsable) VALUES
 INSERT INTO voyage(reservation, date_debut, date_de_fin, cout_par_personne, id_agence) VALUES
 (true, '2024-12-20', '2024-12-29', 1300, 1),
 (false, '2024-09-15', '2024-09-29', 1950, 2),
-(true, '2025-01-03', '2025-01-09', 1675, 3),
+(true, '2025-08-09', '2025-08-25', 1675, 3),
 (false, '2024-11-10', '2024-11-22', 1263, 2);
 
 INSERT INTO pays(nom ,description, id_langue) VALUES
@@ -208,14 +230,9 @@ INSERT INTO pays(nom ,description, id_langue) VALUES
 ('Allemagne', 'Texte presentation 4', 4),
 ('Japon', 'Texte de presentation 5', 5);
 
-
 INSERT INTO Ville(nom, id_pays) VALUES
 ('Paris', 1),
-('Paris', 2),
-('Londres', 1),
 ('Londres', 2),
-('Madrid', 1),
-('Madrid', 2),
 ('Madrid', 3);
 
 INSERT INTO logement(id_ville, id_type_logement) VALUES
@@ -224,7 +241,11 @@ INSERT INTO logement(id_ville, id_type_logement) VALUES
 (1, 3);
 
 INSERT INTO Etape(visa, date_depart, date_arrivée, id_ville, id_et_type, id_logement, id_transport, id_voyage) VALUES
-(TRUE, '2024-12-20', '2024-12-29', 1, 1, 2, 3, 1);
+(TRUE, '2024/12/20', '2024/12/29', 1, 1, 2, 3, 1),
+(TRUE, '2024/01/10', '2025/01/29', 3, 2, 1, 2, 1),
+(TRUE, '2025/08/09', '2025/08/19', 1, 1, 2, 1, 3),
+(TRUE, '2025/08/20', '2025/08/25', 2, 1, 2, 3, 3),
+(TRUE, '2025/08/20', '2025/08/25', 2, 1, 2, 3, 2);
 
 INSERT INTO participe(id_utilisateur, id_voyage) VALUES
 (1, 1),
@@ -236,10 +257,35 @@ INSERT INTO participe(id_utilisateur, id_voyage) VALUES
 (1, 3),
 (1, 4);
 
-CREATE VIEW nb_voyage AS (SELECT count(id_voyage) AS Current_nb_voy, id_agence FROM voyage WHERE date_debut < CURRENT_DATE AND date_de_fin > CURRENT_DATE GROUP BY id_agence);
 
-CREATE VIEW nb_voy_res AS (SELECT count(id_voyage) AS Open_nb_voy, id_agence FROM voyage WHERE reservation = true GROUP BY id_agence);
+/*nombre de voyage par semaine*/
+CREATE VIEW voyages_en_cours AS
+SELECT DATE_PART('week',date_debut)AS semaine,
+   id_agence,count(id_voyage) 
+FROM voyage 
+GROUP BY semaine,id_agence;
 
-CREATE VIEW nb_clients_voy AS (SELECT count(id_utilisateur) AS Nb_cli_voy FROM client NATURAL JOIN participe NATURAL JOIN voyage WHERE date_debut < CURRENT_DATE AND CURRENT_DATE < date_de_fin);
+/* client par voyage*/
+CREATE VIEW clients_en_voyage AS
+SELECT DATE_PART('Year',date_debut)AS Annee,
+id_agence,COUNT(DISTINCT id_utilisateur),
+DATE_PART('week',date_debut)AS semaine 
+FROM participe NATURAL JOIN voyage 
+GROUP BY annee,semaine,id_agence;
 
-CREATE VIEW nb_res AS (SELECT count(id_utilisateur) AS Current_nb_res, id_agence FROM voyage NATURAL JOIN participe WHERE date_debut > CURRENT_DATE GROUP BY id_agence);
+/* nombre de voyage ouvert a reservation par semaine*/
+CREATE VIEW voyages_ouverts_reservation AS
+SELECT DATE_PART('Year',date_reservation_ouverture)AS Annee,
+   id_agence,COUNT(DISTINCT id_voyage),
+   DATE_PART('week',date_reservation_ouverture)AS semaine 
+FROM participe NATURAL JOIN voyage WHERE reservation = TRUE 
+GROUP BY Annee,semaine,id_agence;
+
+/* nombre de client reservation voyage*/
+CREATE VIEW reservations_en_cours AS
+SELECT  id_agence,
+   count(DISTINCT id_utilisateur)AS nb_reservation,
+   DATE_PART('week',date_reservation_ouverture)AS semaine,
+   DATE_PART('year',date_reservation_ouverture)AS annee  
+FROM participe NATURAL JOIN voyage  
+GROUP BY id_agence,semaine,annee;

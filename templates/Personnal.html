@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title> PROFIL</title>
+</head>
+
+<body>
+    <nav style="text-align:center; background-color:LightGray">
+        <a href="/Accueil">Accueil</a>
+        <a href="/page_recherche">Page_recherche</a>
+        <a href="/Personnal">Profil</a>
+      </nav>
+    <h1>Mes informations</h1>
+    <form method="post">
+    {% for detail in details %}
+        <p>Nom : <input type="text" name="nom" value="{{ detail.nom }}" required></p>
+        <p>Sexe : <input type="text" name="sexe" value="{{ detail.sexe }}" required></p>
+        <p>Courriel : <input type="email" name="courriel" value="{{ detail.courriel }}" required></p>
+        <p>Prénom : <input type="text" name="prenom" value="{{ detail.prenom }}" required></p>
+        <p>Téléphone : <input type="tel" name="tel" value="{{ detail.tel }}" required></p>
+        <p>Adresse : <input type="text" name="adresse" value="{{ detail.adresse }}" required></p>
+        <p>Âge : <input type="date" name="age" value="{{ detail.age }}" required></p>
+        <p>Nationalité : <input type="text" name="nationnalite" value="{{ detail.nationnalite }}" required></p>
+        <p>Mot de passe : <input type="text" name="password" value="" ></p>
+    {% endfor %}
+    <form method="post" action="/Personnal">
+        <button type="submit" name="mise_a_jour">Mettre à jour</button>
+    </form>
+</form>
+<h2>Voyages actuels</h2>
+    <ul>
+        {% for voyage in voyage_actuelle %}
+            <li>Voyage ID : {{ voyage }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Voyages passés</h2>
+    <ul>
+        {% for voyage in voyage_passer %}
+            <li>Voyage ID : {{ voyage }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

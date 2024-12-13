@@ -27,6 +27,10 @@
                 <p>Logement : {{ detail.type_logement}}</p>
                 <p>Transport : {{ detail.transport}}</p>
                 <p>Type: {{ detail.type }}</p>
+                <p>Agence: {{ detail.Agence }} {{ detail.agence_adresse }} {{ detail.agence_ville }} {{ detail.agence_telephone }} </p>
+                <form method="POST" action="/detail/{{ detail.id_voyage }}">
+                    <button type="submit">Réserver ce voyage</button>
+                </form>
                 <hr>
             {% endfor %}
         {% else %}
