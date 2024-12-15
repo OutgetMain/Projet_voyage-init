@@ -1,11 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <title>Bon Voyage</title>
-
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+ </head>
 <header>
-  <h1 style="text-align:center"> Formulaire d'inscription </h1>
+  <h1 style="text-align:center"> BonVoyage </h1>
 </header>
-
+ 
 <body>
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -21,6 +23,12 @@
     <a href="/Accueil">Accueil</a>
     <a href="/page_recherche">Page_recherche</a>
     <a href="/Personnal">Profil</a>
+    {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif%}
   </nav>
 
   <form method="post">
@@ -40,6 +48,8 @@
           <input type="password" id="password" name="password" required><br><br>
 
           <button type="submit" name="validation_connexion">Validez</button>
+          <br>
+          <a href="conn">Je suis employé/responsable</a>
       {% elif form_type == "inscription" %}
           <p>
               Nom : <input type="text" name="nom" required><br>

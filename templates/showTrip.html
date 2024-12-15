@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<title>Liste des voyages</title>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <header>
+        <h1 style="text-align:center"> Liste des voyages </h1>
+      </header>
+ <body>
+    <nav>
+
+        <a href="/Accueil">Accueil</a>
+        <a href="/page_recherche">Page_recherche</a>
+        <a href="/Personnal">Profil</a>
+
+        {% if work_connected %}
+                <a href="/configTrip">Gérer les voyages</a>
+            {% endif %}
+            {%if work_resp %}
+                <a href="/configUser">Gerer comptes</a>
+            {%endif%}
+    </nav>
+
+
+            {%for trip in tripList%}
+
+            <p>
+                <a href="configTrip/{{trip.id_voyage}}">{{trip.nom}} Date début : {{trip.date_debut}} Date fin : {{trip.date_de_fin}} Prix : {{trip.cout_par_personne}} Id_agence : {{trip.id_agence}}</a>
+                <br>
+            </p>
+            {%endfor%}
+        </tr>
+
+    </table>
+
+    
+    <form method="POST" action="/configTrip/add">
+        <button type="submit">Ajouter un voyage</button>
+</body>
+
+</html>

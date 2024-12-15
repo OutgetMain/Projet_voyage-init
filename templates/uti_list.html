@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+     </head>
+     <header>
+        <h1 style="text-align:center"> Liste des comptes </h1>
+      </header>
+<nav>
+  <style>
+      nav {
+          text-align: center;
+          background-color: LightGray;
+      }
+
+      a {
+          margin: 10px;
+      }</style>
+  <a href="/Accueil">Accueil</a>
+  <a href="/page_recherche">Page_recherche</a>
+  <a href="/Personnal">Profil</a>
+
+  {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif%}
+</nav>
+  <table>
+ 
+    {% for uti in ulist %}
+    <tr>
+        <td>
+            <a href="configUser/{{uti.id_travailleur}}"> {{ uti.id_travailleur }} {{uti.login}} </a></td>
+
+    </tr>
+    {% endfor %}
+  </table>
+</html>

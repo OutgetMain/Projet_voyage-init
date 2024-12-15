@@ -1,7 +1,9 @@
 <!doctype html>
 <html>
 <title>Voyages</title>
-
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 <header>
   <h1 style="text-align:center"> Voyages </h1>
   <style>.item { border: 1px; padding: 10px; margin: 5px; text-decoration: none; }</style>
@@ -10,7 +12,13 @@
   <a href="/Accueil">Accueil</a>
   <a href="/page_recherche">Page_recherche</a>
   <a href="/Personnal">Profil</a>
-</nav>
+  {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif%}
+</nav> 
 
 <!-- Barre de recherche -->
 <div style="text-align: center; margin-bottom: 20px;">
@@ -21,10 +29,10 @@
 </div>
 
 <!-- Liste des voyages -->
-<p>
+
   {% for element in liste_voyage %}
   <a href="/detail/{{ element[0] }}" class="item">
-    <div id="item-{{loop.index}}" class="item">
+    <!--<div id="item-{{loop.index}}" class="item">!-->
       <p>Le voyage numéro : {{element[0]}}</p>
       <p>Départ le : {{element[1]}}</p>
       <p>Retour le : {{element[2]}}</p>
@@ -36,6 +44,6 @@
     </div>
   </a>
   {% endfor %}
-</p>
+
 
 </html>

@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<nav>
+    <a href="/Accueil">Accueil</a>
+    <a href="/page_recherche">Page_recherche</a>
+    <a href="/Personnal">Profil</a>
+
+    {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif}
+
+        <form method="POST" action="/processEditStage/{{ stage.id_voyage }}">
+            <label for="date_depart">Date de départ: </label>
+            <input type="text" id="date_depart" name="date_depart" value="{{ stage.date_depart }}" required>
+            <br>
+            <label for="date_arrivée">Date de fin: </label>
+            <input type="date" id="date_arrivée" name="date_arrivée" value="{{ stage.date_arrivée }}" required>
+            <br>
+            <select name="ville" id="ville" required>
+                <option value="true">Oui</option>
+            </select>
+            <br>    
+            <select name="logement" id="logement" required>
+                <option value="true">Oui</option>
+            </select>
+            <br>
+            <button type="submit">Enregistrer les modifications</button>
+        </form>
+        <form method="POST" action="/configTrip/{{ trip.id_voyage }}/delete" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce profil ?');">
+            <button type="submit" style="background-color: red; color: white;">Supprimer le profil</button>
+          </form>
+</html>

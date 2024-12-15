@@ -1,0 +1,100 @@
+<html>
+
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<nav>
+    <a href="/Accueil">Accueil</a>
+    <a href="/page_recherche">Page_recherche</a>
+    <a href="/Personnal">Profil</a>
+
+    {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif%}
+
+</nav>
+<h1 style="text-align:center">Clients en voyage </h1>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Année</th>
+            <th>Semaine</th>
+            <th>Nombre clients</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            {%for sem in agences%}
+            <td>{{sem.annee}}</td>
+            <td>{{sem.semaine}}</td>
+            <td>{{sem.count}}</td>
+            {%endfor%}
+        </tr>
+    </tbody>
+
+</table>
+<h1 style="text-align:center">Réservations en cours </h1>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Année</th>
+            <th>Semaine</th>
+            <th>Nombre réservations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            {%for res in reservations%}
+            <td>{{res.annee}}</td>
+            <td>{{res.semaine}}</td>
+            <td>{{res.nb_reservation}}</td>
+            {%endfor%}
+        </tr>
+    </tbody>
+    </table>
+
+    <h1 style="text-align:center">Voyages en cours </h1>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Semaine</th>
+                <th>Nombre voyages</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {%for voy in voyages%}
+                <td>{{voy.semaine}}</td>
+
+                <td>{{voy.count}}</td>
+                {%endfor%}
+            </tr>
+        </tbody>
+        </table>
+
+    <h1 style="text-align:center">Voyages ouverts à la réservation </h1>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Année</th>
+                <th>Semaine</th>
+                <th>Nombre voyages ouverts à la réservation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {%for voy in voyages_open%}
+                <td>{{voy.annee}}</td>
+                <td>{{voy.semaine}}</td>
+                <td>{{voy.count}}</td>
+                {%endfor%}
+            </tr>
+        </tbody>
+        </table>
+   
+
+</html>

@@ -1,14 +1,25 @@
 <html>
-<head>
-    <title> PROFIL</title>
-</head>
+    <title>Profil</title>
+
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+     </head>
+     <header>
+        <h1 style="text-align:center"> Profil </h1>
+      </header>
 
 <body>
     <nav style="text-align:center; background-color:LightGray">
         <a href="/Accueil">Accueil</a>
         <a href="/page_recherche">Page_recherche</a>
         <a href="/Personnal">Profil</a>
-      </nav>
+        {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif%}
+    </nav>
     <h1>Mes informations</h1>
     <form method="post">
     {% for detail in details %}
@@ -22,10 +33,15 @@
         <p>Nationalité : <input type="text" name="nationnalite" value="{{ detail.nationnalite }}" required></p>
         <p>Mot de passe : <input type="text" name="password" value="" ></p>
     {% endfor %}
+    {% for detail2 in details2 %}
+        <p>Login : <input type="text" name="login" value="{{ detail2.login }}" required></p>
+        <p>Mot de passe : <input type="text" name="password" value="" required></p>
+    {% endfor %}
     <form method="post" action="/Personnal">
         <button type="submit" name="mise_a_jour">Mettre à jour</button>
     </form>
 </form>
+{%if details %}
 <h2>Voyages actuels</h2>
     <ul>
         {% for voyage in voyage_actuelle %}
@@ -39,5 +55,6 @@
             <li>Voyage ID : {{ voyage }}</li>
         {% endfor %}
     </ul>
+{%endif%}
 </body>
 </html>
