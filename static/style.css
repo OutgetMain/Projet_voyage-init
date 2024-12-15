@@ -1,0 +1,582 @@
+/* === Global Reset === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 0;
+    margin: 0;
+}
+
+/* === Header === */
+header {
+    background: linear-gradient(90deg, #0078d7, #0056a4);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+header nav {
+    margin-top: 10px;
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+header nav a:hover {
+    color: #ffdd57;
+}
+
+/* === Main Content === */
+main {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+main h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #0056a4;
+    text-transform: uppercase;
+}
+
+main p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.8;
+}
+
+/* === Buttons === */
+button, .btn {
+    background: #0078d7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    background: #0056a4;
+}
+
+/* === Footer === */
+footer {
+    background: #333;
+    color: #f9f9f9;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+footer a {
+    color: #0078d7;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* === Cards === */
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #0078d7;
+}
+
+.card p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* === Forms === */
+form {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form input, form textarea, form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form input:focus, form textarea:focus, form select:focus {
+    border-color: #0078d7;
+    outline: none;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header nav a {
+        font-size: 0.9rem;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .card {
+        margin: 10px 0;
+    }
+}
+
+/* Conteneur du tableau */
+table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Style des cellules du tableau */
+table th,
+table td {
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Couleur d'arrière-plan pour les en-têtes */
+table th {
+    background-color: #34495e;
+    color: white;
+    font-weight: bold;
+}
+
+/* Hover sur les lignes du tableau */
+table tr:hover {
+    background-color: #ecf0f1; /* Couleur claire sur hover */
+}
+
+/* Liens dans les cellules */
+table td a {
+    text-decoration: none;
+    color: #3498db; /* Bleu pour les liens */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+/* Effet hover sur les liens */
+table td a:hover {
+    color: #2980b9; /* Bleu foncé au survol */
+}
+
+/* Style pour les lignes impaires */
+table tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Fond alterné pour une meilleure lisibilité */
+}
+
+/* Style pour les lignes paires */
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Mise en page responsive */
+@media (max-width: 768px) {
+    table th, table td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    table {
+        width: 100%;
+    }
+}
+
+/* Style pour la barre de navigation */
+nav {
+    background-color: #f0f0f0; /* Fond gris clair */
+    text-align: center;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre douce sous la barre */
+}
+
+/* Style des liens de navigation */
+nav a {
+    color: #333; /* Couleur des liens */
+    text-decoration: none; /* Suppression du souligné par défaut */
+    margin: 0 15px; /* Espacement entre les liens */
+    padding: 10px 15px; /* Espacement intérieur des liens */
+    font-size: 16px;
+    font-weight: bold; /* Texte en gras */
+    border-radius: 5px; /* Coins arrondis pour les liens */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transition douce pour les effets */
+}
+
+/* Effet hover pour les liens */
+nav a:hover {
+    background-color: #3498db; /* Changer la couleur de fond au survol */
+    color: white; /* Changer la couleur du texte au survol */
+}
+
+/* Effet active pour les liens cliqués */
+nav a:active {
+    background-color: #2980b9; /* Fond plus foncé lorsque le lien est cliqué */
+}
+
+/* Mise en page responsive */
+@media (max-width: 768px) {
+    nav {
+        padding: 15px 0; /* Plus de padding sur mobile */
+    }
+
+    nav a {
+        font-size: 14px; /* Taille de police réduite pour les petits écrans */
+        margin: 0 10px; /* Réduction de l'espacement entre les liens */
+        padding: 8px 12px; /* Réduction du padding des liens */
+    }
+}
+
+
+/* Style général pour la div contenant les détails */
+.details {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Espacement entre chaque groupe de détails */
+.details hr {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 20px 0;
+}
+
+/* Style pour les paragraphes */
+.details p {
+    margin: 10px 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Accentuation pour les titres ou les étiquettes */
+.details p strong {
+    font-weight: bold;
+    color: #555;
+}
+
+/* Style du bouton de réservation */
+.details button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.details button:hover {
+    background-color: #0056b3;
+}
+
+/* Mise en forme des informations d'agence */
+.details p:nth-last-child(2) {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Espacement autour des informations */
+.details p {
+    margin-bottom: 10px;
+}
+
+/* Alignement centré pour le formulaire */
+.details form {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+
+/* Style global pour l'encapsulation */
+p {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    font-family: Arial, sans-serif;
+}
+
+/* Style pour le conteneur des items */
+.item {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 15px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+}
+
+/* Style pour les paragraphes des items */
+.item p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Style pour le <li> dans les boucles */
+.item li {
+    font-size: 14px;
+    color: #666;
+    margin-left: 20px;
+}
+
+/* ID spécifique pour les items */
+[id^="item-"] {
+    border-left: 4px solid #007BFF;
+    padding-left: 15px;
+}
+
+/* Alignement du conteneur principal */
+p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Style pour le conteneur principal ayant la classe .item */
+.item {
+    display: block;
+    text-decoration: none; /* Garde le lien non souligné */
+    color: inherit; /* Garde la couleur du texte par défaut */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 15px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Effet au survol uniquement pour les éléments avec la classe item */
+.item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+}
+
+/* Style pour les paragraphes à l'intérieur de .item */
+.item p {
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Style pour les listes imbriquées dans les .item */
+.item li {
+    font-size: 14px;
+    color: #666;
+    margin-left: 20px;
+}
+
+/* Retire les bordures et padding des div imbriquées */
+.item > div {
+    padding: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+}
+
+/* Style global pour la section des détails */
+.details {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Style pour chaque bloc de détails */
+.details p {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+/* Mettre en avant les titres */
+/*.details p:first-child {
+    font-weight: bold;
+    font-size: 18px;
+    color: #007BFF;
+    margin-bottom: 15px;
+}*/
+
+/* Style pour le bouton de réservation */
+.details form button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.details form button:hover {
+    background-color: #0056b3;
+}
+
+/* Espacement entre les blocs */
+.details hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
+
+/* Aucun détail trouvé */
+.details p:last-child {
+    font-style: italic;
+    color: #999;
+    text-align: center;
+}
+
+.nomvoyage{
+    font-weight: bold;
+    font-size: 25px;
+    color: #007BFF;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.etape{
+    font-weight: bold;
+    font-size: 20px;
+    color: #007BFF;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Style uniquement pour les tables ayant la classe .styled-table */
+table.styled-table {
+    border-collapse: collapse;
+    margin: 25px auto;
+    font-size: 18px;
+    width: 80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+    border-radius: 5px;
+    text-align: left;
+}
+
+/* Style pour l'en-tête */
+table.styled-table thead tr {
+    background-color: #007BFF; /* Couleur bleu */
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Style pour les lignes du corps */
+table.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+/* Style pour les lignes paires */
+table.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+/* Style pour les lignes survolées */
+table.styled-table tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Style pour la dernière ligne */
+table.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #007BFF;
+}
