@@ -1,0 +1,24 @@
+<html>
+
+<nav>
+    <style>
+        nav {
+            text-align: center;
+            background-color: LightGray;
+        }
+  
+        a {
+            margin: 10px;
+        }</style>
+    <a href="/Accueil">Accueil</a>
+    <a href="/page_recherche">Page_recherche</a>
+    {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif%}
+  </nav>
+
+    <h1>Erreur, aucun voyage n'a été trouvé </h1>
+</html>

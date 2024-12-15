@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+     </head>
+<nav>
+
+    <a href="/Accueil">Accueil</a>
+    <a href="/page_recherche">Page_recherche</a>
+    {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif%}
+  </nav>
+
+<form method="POST" action="/configTrip/{{ trip.id_voyage }}/edit">
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" name="nom" value="{{ trip.nom }}" required>
+    <br>
+    <label for="date_debut">Date de début :</label>
+    <input type="date" id="date_debut" name="date_debut" value="{{ trip.date_debut }}" required>
+    <br>
+    <label for="date_de_fin">Date de fin :</label>
+    <input type="date" id="date_fin" name="date_fin" value="{{ trip.date_de_fin }}" required>
+    <br>
+    <label for="prix">Prix :</label>
+    <input type="number" id="prix" name="prix" value="{{ trip.cout_par_personne }}" required>
+
+    <br>
+
+    <select name="reservation" id="reservation" required>
+        <option value="true" {% if trip.reservation == True %}selected{% endif %}>Oui</option>
+        <option value="false" {% if trip.reservation == False %}selected{% endif %}>Non</option>
+    </select>
+    <br>
+    <button type="submit">Enregistrer les modifications</button>
+</form>
+<form method="POST" action="/configTrip/{{ trip.id_voyage }}/delete" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce profil ?');">
+    <button type="submit" style="background-color: red; color: white;">Supprimer le profil</button>
+  </form>
+
+  {%for etape in etapeList%}
+    <p>
+        <a href="{{trip.id_voyage}}/configStage/{{ etape.id_etape }}">{{etape.id_etape}} Date début : {{etape.date_depart}} Date fin : {{etape.arrivée}} Id_voyage : {{etape.id_voyage}}</a>
+        <br>
+        </p>
+    {% endfor %}
+
+
+
+
+
+</html>

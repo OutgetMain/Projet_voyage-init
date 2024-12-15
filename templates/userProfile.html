@@ -1,0 +1,34 @@
+<html>
+
+<nav>
+  <style>
+      nav {
+          text-align: center;
+          background-color: LightGray;
+      }
+
+      a {
+          margin: 10px;
+      }</style>
+  <a href="/Accueil">Accueil</a>
+  <a href="/page_recherche">Page_recherche</a>
+  {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif%}
+</nav>
+    <li>Nom : {{lst_att.nom}}</li>
+    <li>Prénom : {{lst_att.prenom}}</li>
+    <li>Age : {{lst_att.age}}</li>
+    <li>Sexe : {{lst_att.sexe}}</li>
+    <li>Courriel : {{lst_att.courriel}}</li>
+    <li>Tel : {{lst_att.tel}}</li>
+    <li>Adresse : {{lst_att.adresse}}</li>
+    <li>Nationnalité : {{lst_att.nationnalite}}</li>
+    <li>Mot de passe : {{lst_att.mdp}}</li>
+    <form>
+    <a href="{{ lst_att.id_utilisateur }}/edit"> Modifier </a></td>
+    </form>
+</html>

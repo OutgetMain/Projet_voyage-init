@@ -1,0 +1,30 @@
+<html>
+
+<nav>
+    <style>
+        nav {
+            text-align: center;
+            background-color: LightGray;
+        }
+  
+        a {
+            margin: 10px;
+        }</style>
+    <a href="/Accueil">Accueil</a>
+    <a href="/page_recherche">Page_recherche</a>
+    <a href="/configUser">Gerer comptes</a>
+    <a href="/configTrip">Gérer les voyages</a>
+  </nav>
+
+    <table>
+    
+        {% for trip in tripList %}
+        <tr>
+            <td>
+                <a href="configTrip/{{trip.id_voyage}}/edit"> {{ trip.id_voyage }} {{trip.nom}} {{trip.date_debut}} {{trip.date_fin}}</a>
+            </td>
+     
+        </tr>
+        {% endfor %}
+    </table>
+</html>

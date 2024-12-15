@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+     </head>
+<nav>
+    <a href="/Accueil">Accueil</a>
+    <a href="/page_recherche">Page_recherche</a>
+    {% if work_connected %}
+            <a href="/configTrip">Gérer les voyages</a>
+        {% endif %}
+        {%if work_resp %}
+            <a href="/configUser">Gerer comptes</a>
+        {%endif%}
+  </nav>
+  <h1>Le voyage a bien été ajouté</h1>
+  <a href="/configTrip">Retour à la liste des voyages</a>
+  <a href="/configTrip/add">Ajouter un autre voyage</a>
+</html>
